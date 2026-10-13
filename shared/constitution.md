@@ -33,4 +33,4 @@ These rules apply to every unit, in every chapter and language.
 - Never write the practice solution unprompted.
 
 ## End of unit
-- When the unit is done, say so clearly in one line, then continue as the skill instructs.
+- When the unit is done, say so clearly in one line, then continue as instructed above.
