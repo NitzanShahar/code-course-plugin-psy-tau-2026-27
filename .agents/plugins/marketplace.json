@@ -1,0 +1,20 @@
+{
+  "name": "tau-psy-code-course",
+  "interface": {
+    "displayName": "TAU Psychology – Code Courses"
+  },
+  "plugins": [
+    {
+      "name": "code-course-test",
+      "source": {
+        "source": "local",
+        "path": "./plugins/code-course-test"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Education"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "code-course-test",
+  "version": "0.1.0",
+  "description": "Test build of the TAU Psychology code course tutor: one R chapter (atomic objects) with three units.",
+  "author": {
+    "name": "Nitzan Shahar"
+  },
+  "license": "MIT",
+  "keywords": ["education", "R", "tutor"]
+}
