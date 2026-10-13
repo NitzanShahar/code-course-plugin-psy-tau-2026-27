@@ -18,7 +18,7 @@ In menus, print titles exactly as in the catalog – no backticks around English
 
 **פרק 2 · אובייקטים בסיסיים (atomic objects)**
 
-- **<shortcut>** · <unit title> · שבוע <weeks>
+- **<shortcut>** · <unit title>
 
 Then one line: `כתבו את מספר היחידה כדי להתחיל, למשל 2.2.`
 Put ✓ after the shortcut of units completed in this conversation.
@@ -28,7 +28,7 @@ If the student writes "חזור" or "תפריט" at any point, show this menu ag
 1. Read only `../../<path>` of the chosen unit (path from the catalog).
 2. First line: **יחידה <shortcut> · <unit title>**
 3. Run it according to the constitution.
-4. When it ends: `✓ היחידה הושלמה`, then the unit menu again with the next unit suggested.
+4. When it ends: `✓ היחידה הושלמה`, then the unit menu again.
    After the chapter's last unit, say the chapter is done and that the next chapter can be
    chosen from the `@R Course` list.
    If the student asks for a unit from another chapter, tell them to pick that chapter from the

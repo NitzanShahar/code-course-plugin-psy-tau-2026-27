@@ -15,7 +15,7 @@ import shutil
 from pathlib import Path
 
 ROOT = Path(__file__).parent
-VERSION = "0.5.0"
+VERSION = "0.6.0"
 PLUGINS = {
     "r-course": {"language": "R", "prefix": "R", "display": "R Course"},
     "python-course": {"language": "Python", "prefix": "PY", "display": "Python Course"},
@@ -56,7 +56,6 @@ def build_catalog(plugin_dir, cfg):
                 "id": uid,
                 "shortcut": f"{int(ch)}.{int(un)}",
                 "title": unit["title"],
-                "weeks": unit.get("weeks", []),
                 "path": unit_file.relative_to(plugin_dir).as_posix(),
             })
         chapters.append({
@@ -109,7 +108,7 @@ def main():
         write(skill_dir / "SKILL.md", template.format(plugin=name, **cfg))
         write(skill_dir / "agents/openai.yaml",
               f'interface:\n  display_name: "{cfg["display"]}"\n'
-              f'  short_description: "Weekly view – choose your week"\n')
+              f'  short_description: "All chapters and units"\n')
         for chapter in catalog["chapters"]:
             folder = Path(chapter["units"][0]["path"]).parent.name
             skill = f"{cfg['prefix'].lower()}-{folder}"

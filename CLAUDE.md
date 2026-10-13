@@ -7,7 +7,7 @@ Target: students on **free** ChatGPT accounts, desktop app.
 ## Structure
 ```
 shared/constitution.md          teaching rules for every unit (edit here only)
-shared/skill-template.md        main skill per plugin = weekly view (edit here only)
+shared/skill-template.md        main skill per plugin = library index (edit here only)
 shared/chapter-skill-template.md  one skill per chapter (edit here only)
 plugins/<r|python>-course/
   units/<NN-chapter>/chapter.md     chapter id, Hebrew title, short English name_en
@@ -20,7 +20,9 @@ build.py                        generates manifests, catalog.json, all skills + 
 After any edit: `python build.py`, then commit the generated files too.
 
 ## Conventions
-- Unit front matter: `id`, `title`, `weeks: [..]`. IDs are permanent
+- The plugin is a prompt library: no weeks, schedules or "what's next" logic.
+  Students know which chapter and unit to do; the plugin only makes units easy to reach.
+- Unit front matter: `id`, `title`. IDs are permanent
   (`R-02-03`, `PY-02-03`); never renumber. Shortcut `2.3` is derived from the id.
 - Unit text stays in the TAs' Hebrew wording, in the student's voice ("explain to me").
   Drop embedded video files; keep links.
@@ -31,7 +33,7 @@ After any edit: `python build.py`, then commit the generated files too.
 - A plugin installs from this public GitHub repo via its marketplace file.
 - Typing `@R c` or `$r-course:` lists **every skill in the plugin** (shown as
   `$plugin:skill`). So the dropdown is the clickable chapter menu: one plugin per
-  language, one skill per chapter, plus a main skill for the weekly view.
+  language, one skill per chapter, plus a main skill listing the whole library.
   Selecting a chapter skill with no text still starts it.
 - Dropdown labels come from each skill's `agents/openai.yaml` (`display_name`,
   `short_description`); without it ChatGPT shows the raw name and description.
