@@ -1,0 +1,27 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "python-course",
+  "version": "0.3.0",
+  "description": "TAU Psychology Python course tutor: choose a chapter and unit, and learn it step by step. When mentioned, read the python-course skill and show its menu.",
+  "author": {
+    "name": "Nitzan Shahar"
+  },
+  "license": "MIT",
+  "keywords": [
+    "education",
+    "Python",
+    "tutor"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Python Course",
+        "shortDescription": "קורס Python – יחידות לימוד עם מתרגל AI",
+        "category": "Education",
+        "defaultPrompt": [
+          "פתח את תפריט הקורס"
+        ]
+      }
+    }
+  }
+}

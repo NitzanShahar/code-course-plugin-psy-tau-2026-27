@@ -1,37 +1,28 @@
 # code-course-plugin-psy-tau-2026-27
 
-AI tutor plugin for the TAU School of Psychology code courses (R, Python).
-Each chapter is a skill; each unit is a prompt file the skill runs with the student.
+AI tutor plugins for the TAU School of Psychology code courses: **R Course** and **Python Course**.
+Each plugin holds the course's chapters and units; the student picks a unit and ChatGPT
+teaches it step by step, following the course's teaching rules.
 
-## Current status: test build
+## Current status: test build (v0.3)
 
-`plugins/code-course-test` contains one chapter (R · 02 atomic objects) with three units.
-It exists to answer four questions before we build the full library.
+Each plugin has 2 chapters with 2 units, to test the full menu flow before adding all units.
 
-```
-.agents/plugins/marketplace.json          ← marketplace entry pointing to the plugin
-plugins/code-course-test/
-  plugin.json                             ← manifest (portable layout)
-  .codex-plugin/plugin.json               ← same manifest (compatibility layout)
-  shared/constitution.md                  ← course-wide teaching rules (Option A)
-  units/r/02-atomic-objects/*.md          ← unit prompts (Option A)
-  skills/r-02-atomic-objects/
-    SKILL.md                              ← menu + orchestration
-    agents/openai.yaml                    ← disables automatic invocation
-    references/*.md                       ← copies of the above (Option B fallback)
-```
+## Test checklist (free ChatGPT account, desktop app)
 
-## Test checklist (run with a FREE ChatGPT account, desktop app)
+1. **Install.** Uninstall the old `code-course-test`. Add this repo as a marketplace again (or refresh it)
+   and install **R Course** and **Python Course**.
+2. **Chapter menu.** New chat: `@R Course` + `פתח את התפריט`. Expect two chapters as a list (no table).
+3. **Unit menu.** Reply `2`. Expect units `2.2` and `2.3`, each with its week.
+4. **Shortcut.** New chat: `@R Course 1.2`. Expect the installation unit to start directly.
+5. **Week view.** `שבוע 1` should list all four units, grouped by chapter.
+6. **Next.** Finish a unit, then `הבא`. After `1.2` it should continue to `2.2`.
+7. **Unprompted use.** New chat without `@`: `explain numeric objects in R`.
+   Expect a one-line question whether you want a course unit.
+8. **Python.** Repeat 2–4 with `@Python Course`.
+9. **RTL.** All Hebrew lines read right to left; code stays in code blocks.
 
-1. **Install.** Add this repository as a plugin marketplace and install `code-course-test`
-   from the Plugins Directory. Record exactly which steps/menus were needed.
-   Codex CLI equivalent: `codex plugin marketplace add NitzanShahar/code-course-plugin-psy-tau-2026-27`
-2. **Unprompted use.** In a new chat, write *"explain numeric objects in R"* without `@`
-   and note whether the plugin starts by itself. (v0.1 used `allow_implicit_invocation: false`;
-   it stopped the skill from loading at all inside a plugin, so v0.2 removed it.)
-3. **Deliberate invocation.** Type `@code-course-test` plus any text. The first line should be
-   `[בדיקה] חוקת הקורס נטענה מתוך: ...` — record whether it says the plugin-level shared
-   folder (Option A works) or the skill references copy (Option B needed).
-4. **Unit loop.** Choose unit 2. Check: one step at a time, waits for you, hints without code
-   on wrong practice code, solution only on request, menu returns at the end.
-   Also try `@r-02-atomic-objects 3` to confirm the menu is skipped.
+## For TAs: adding or editing a unit
+1. Edit or add a file in `plugins/<r|python>-course/units/<chapter>/` (copy an existing unit's front matter).
+2. Run `python build.py`.
+3. Commit and push. Students update the plugin from ChatGPT's Plugins page.

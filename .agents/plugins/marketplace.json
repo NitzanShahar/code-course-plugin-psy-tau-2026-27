@@ -5,10 +5,22 @@
   },
   "plugins": [
     {
-      "name": "code-course-test",
+      "name": "r-course",
       "source": {
         "source": "local",
-        "path": "./plugins/code-course-test"
+        "path": "./plugins/r-course"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Education"
+    },
+    {
+      "name": "python-course",
+      "source": {
+        "source": "local",
+        "path": "./plugins/python-course"
       },
       "policy": {
         "installation": "AVAILABLE",
