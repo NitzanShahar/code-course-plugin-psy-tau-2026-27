@@ -1,6 +1,7 @@
 ---
 id: PY-02-03
 title: אובייקט מחרוזת (string)
+name_en: String
 ---
 
 1.

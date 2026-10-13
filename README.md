@@ -5,22 +5,24 @@ Each plugin holds the course's chapters and units; the student picks a unit and 
 teaches it step by step, following the course's teaching rules.
 
 ## How students use it
-- **By chapter:** type `@R c`, pick a chapter from the dropdown (e.g. *R Course: Ch 02 · Atomic objects*),
-  send. The chapter's units appear; write a unit number (e.g. `2.2`) to start.
-- **Whole library:** pick *R Course* itself. It lists every chapter and unit; write a unit number,
-  or describe a topic ("strings") to find matching units.
-- **Directly:** `@R Course 2.3` starts unit 2.3 straight away.
+Type `@R-C` (or `@Python-C`) and pick from the dropdown – every entry starts right away:
+- `R-Course` – the whole library: all chapters and units.
+- `R-Course: Ch02-Atomic-objects` – that chapter's units.
+- `R-Course: Ch02-2.2-Numeric` – that unit.
 
-## Current status: test build (v0.6)
+Typing more filters the list, e.g. `@R-C ch02` or `@R-C numeric`.
 
-Each plugin has 2 chapters with 2 units. Checklist (free ChatGPT account, desktop app; update the plugins first):
-1. **Labels.** `@R c` shows *R Course*, *Ch 01 · Interface*, *Ch 02 · Atomic objects*, with Hebrew descriptions.
-2. **Chapter.** Select *Ch 02*, send with no text. Expect a bulleted unit list (no table) and a one-line prompt.
-3. **Unit.** Write `2.2`. Expect the unit header, then step-by-step teaching. `חזור` returns to the list.
-4. **Index.** Select *R Course*, send with no text. Expect all chapters with their units. Try `strings` too.
-5. **Unprompted use.** New chat without `@`: `explain numeric objects in R`. A normal answer or a one-line question is fine.
-6. **Python.** Repeat 1–4 with `@Python c`.
-7. **RTL.** Hebrew reads right to left; code stays in code blocks.
+## Current status: test build (v0.7)
+
+Each plugin has 2 chapters with 2 units, each as its own dropdown entry.
+Checklist (free ChatGPT account, desktop app; update or reinstall the plugins first):
+1. **Labels.** `@R-C` lists *R-Course*, *Ch01-Interface*, *Ch01-1.1-History*, … with Hebrew descriptions.
+2. **Filter.** Does `@R-C ch02` show only chapter 2 and its units? Does `@R-C numeric` find unit 2.2?
+3. **Unit.** Select *Ch02-2.2-Numeric*, send with no text. The unit should start immediately.
+4. **Chapter.** Select *Ch02-Atomic-objects*, send with no text. Expect its unit list.
+5. **Library.** Select *R-Course*, send with no text. Expect all chapters and units.
+6. **Unprompted use.** New chat without `@`: `explain numeric objects in R`. Note what happens.
+7. **Python.** Repeat 1–3 with `@Python-C`.
 
 ## For TAs: adding or editing a unit
 1. Edit or add a file in `plugins/<r|python>-course/units/<chapter>/` (copy an existing unit's front matter).

@@ -15,10 +15,10 @@ import shutil
 from pathlib import Path
 
 ROOT = Path(__file__).parent
-VERSION = "0.6.0"
+VERSION = "0.7.0"
 PLUGINS = {
-    "r-course": {"language": "R", "prefix": "R", "display": "R Course"},
-    "python-course": {"language": "Python", "prefix": "PY", "display": "Python Course"},
+    "r-course": {"language": "R", "prefix": "R", "display": "R-Course"},
+    "python-course": {"language": "Python", "prefix": "PY", "display": "Python-Course"},
 }
 
 
@@ -36,6 +36,13 @@ def front_matter(path):
             value = [int(v) for v in value.strip("[]").split(",") if v.strip()]
         meta[key.strip()] = value
     return meta
+
+
+def no_spaces(path, name):
+    """name_en becomes part of dropdown labels and skill names: letters, digits and hyphens only."""
+    if not re.fullmatch(r"[A-Za-z0-9-]+", name):
+        raise ValueError(f"{path}: name_en '{name}' must use only letters, digits and hyphens")
+    return name
 
 
 def build_catalog(plugin_dir, cfg):
@@ -56,13 +63,14 @@ def build_catalog(plugin_dir, cfg):
                 "id": uid,
                 "shortcut": f"{int(ch)}.{int(un)}",
                 "title": unit["title"],
+                "name_en": no_spaces(unit_file, unit["name_en"]),
                 "path": unit_file.relative_to(plugin_dir).as_posix(),
             })
         chapters.append({
             "id": chapter["id"],
             "number": int(chapter["id"].split("-")[1]),
             "title": chapter["title"],
-            "name_en": chapter["name_en"],
+            "name_en": no_spaces(chapter_dir / "chapter.md", chapter["name_en"]),
             "units": units,
         })
     return {"plugin": plugin_dir.name, "language": cfg["language"], "chapters": chapters}
@@ -97,6 +105,7 @@ def manifest(name, cfg):
 def main():
     template = (ROOT / "shared/skill-template.md").read_text(encoding="utf-8")
     chapter_template = (ROOT / "shared/chapter-skill-template.md").read_text(encoding="utf-8")
+    unit_template = (ROOT / "shared/unit-skill-template.md").read_text(encoding="utf-8")
     marketplace = []
     for name, cfg in PLUGINS.items():
         plugin_dir = ROOT / "plugins" / name
@@ -104,21 +113,28 @@ def main():
         write(plugin_dir / "catalog.json", catalog)
         (plugin_dir / "shared").mkdir(exist_ok=True)
         shutil.copyfile(ROOT / "shared/constitution.md", plugin_dir / "shared/constitution.md")
-        skill_dir = plugin_dir / "skills" / name
-        write(skill_dir / "SKILL.md", template.format(plugin=name, **cfg))
-        write(skill_dir / "agents/openai.yaml",
-              f'interface:\n  display_name: "{cfg["display"]}"\n'
-              f'  short_description: "All chapters and units"\n')
-        for chapter in catalog["chapters"]:
-            folder = Path(chapter["units"][0]["path"]).parent.name
-            skill = f"{cfg['prefix'].lower()}-{folder}"
-            write(plugin_dir / "skills" / skill / "SKILL.md", chapter_template.format(
-                skill=skill, language=cfg["language"], display=cfg["display"],
-                number=chapter["number"], title=chapter["title"], name_en=chapter["name_en"],
-                chapter_id=chapter["id"], first_shortcut=chapter["units"][0]["shortcut"]))
+        shutil.rmtree(plugin_dir / "skills", ignore_errors=True)  # skills are fully generated
+
+        def add_skill(skill, content, label, description):
+            write(plugin_dir / "skills" / skill / "SKILL.md", content)
             write(plugin_dir / "skills" / skill / "agents/openai.yaml",
-                  f'interface:\n  display_name: "Ch {chapter["number"]:02d} · {chapter["name_en"]}"\n'
-                  f'  short_description: "{chapter["title"]}"\n')
+                  f'interface:\n  display_name: "{label}"\n  short_description: "{description}"\n')
+
+        add_skill(name, template.format(plugin=name, **cfg), cfg["display"], "כל הפרקים והיחידות")
+        prefix = cfg["prefix"].lower()
+        for chapter in catalog["chapters"]:
+            ch = f"ch{chapter['number']:02d}"
+            add_skill(f"{prefix}-{ch}-{chapter['name_en'].lower()}", chapter_template.format(
+                skill=f"{prefix}-{ch}-{chapter['name_en'].lower()}", language=cfg["language"],
+                display=cfg["display"], number=chapter["number"], title=chapter["title"],
+                name_en=chapter["name_en"], chapter_id=chapter["id"],
+                first_shortcut=chapter["units"][0]["shortcut"]),
+                f"Ch{chapter['number']:02d}-{chapter['name_en']}", chapter["title"])
+            for unit in chapter["units"]:
+                skill = f"{prefix}-{ch}-u{unit['id'][-2:]}-{unit['name_en'].lower()}"
+                add_skill(skill, unit_template.format(
+                    skill=skill, language=cfg["language"], display=cfg["display"], **unit),
+                    f"Ch{chapter['number']:02d}-{unit['shortcut']}-{unit['name_en']}", unit["title"])
         write(plugin_dir / "plugin.json", manifest(name, cfg))
         write(plugin_dir / ".codex-plugin/plugin.json", {**manifest(name, cfg), "skills": "./skills/"})
         marketplace.append({

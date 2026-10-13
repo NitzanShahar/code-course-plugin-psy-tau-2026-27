@@ -1,6 +1,7 @@
 ---
 id: PY-02-02
 title: אובייקט מספרי (int ו-float) – פעולות חשבון
+name_en: Numeric
 ---
 
 1.

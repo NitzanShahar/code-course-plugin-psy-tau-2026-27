@@ -1,6 +1,7 @@
 ---
 id: R-02-02
 title: אובייקט מספרי (numeric)
+name_en: Numeric
 ---
 
 1.

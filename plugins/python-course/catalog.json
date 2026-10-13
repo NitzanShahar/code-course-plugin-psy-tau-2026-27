@@ -6,18 +6,20 @@
       "id": "PY-01",
       "number": 1,
       "title": "היכרות וסביבות עבודה",
-      "name_en": "Intro and environments",
+      "name_en": "Intro",
       "units": [
         {
           "id": "PY-01-01",
           "shortcut": "1.1",
           "title": "היסטוריה בסיסית על פייתון",
+          "name_en": "History",
           "path": "units/01-intro/01-history.md"
         },
         {
           "id": "PY-01-02",
           "shortcut": "1.2",
           "title": "עבודה עם Google Colab",
+          "name_en": "Colab",
           "path": "units/01-intro/02-colab.md"
         }
       ]
@@ -26,18 +28,20 @@
       "id": "PY-02",
       "number": 2,
       "title": "אובייקטים בסיסיים",
-      "name_en": "Basic objects",
+      "name_en": "Basic-objects",
       "units": [
         {
           "id": "PY-02-02",
           "shortcut": "2.2",
           "title": "אובייקט מספרי (int ו-float) – פעולות חשבון",
+          "name_en": "Numeric",
           "path": "units/02-basic-objects/02-numeric.md"
         },
         {
           "id": "PY-02-03",
           "shortcut": "2.3",
           "title": "אובייקט מחרוזת (string)",
+          "name_en": "String",
           "path": "units/02-basic-objects/03-string.md"
         }
       ]

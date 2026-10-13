@@ -12,12 +12,14 @@
           "id": "R-01-01",
           "shortcut": "1.1",
           "title": "היסטוריה בסיסית",
+          "name_en": "History",
           "path": "units/01-interface/01-history.md"
         },
         {
           "id": "R-01-02",
           "shortcut": "1.2",
           "title": "התקנה",
+          "name_en": "Installation",
           "path": "units/01-interface/02-installation.md"
         }
       ]
@@ -26,18 +28,20 @@
       "id": "R-02",
       "number": 2,
       "title": "אובייקטים בסיסיים (atomic objects)",
-      "name_en": "Atomic objects",
+      "name_en": "Atomic-objects",
       "units": [
         {
           "id": "R-02-02",
           "shortcut": "2.2",
           "title": "אובייקט מספרי (numeric)",
+          "name_en": "Numeric",
           "path": "units/02-atomic-objects/02-numeric.md"
         },
         {
           "id": "R-02-03",
           "shortcut": "2.3",
           "title": "אובייקט מחרוזת (string)",
+          "name_en": "String",
           "path": "units/02-atomic-objects/03-string.md"
         }
       ]

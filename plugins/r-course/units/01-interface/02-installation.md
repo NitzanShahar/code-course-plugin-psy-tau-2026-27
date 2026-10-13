@@ -1,6 +1,7 @@
 ---
 id: R-01-02
 title: התקנה
+name_en: Installation
 ---
 
 שאל אותי מה מערכת ההפעלה שלי: windows, mac או linux.

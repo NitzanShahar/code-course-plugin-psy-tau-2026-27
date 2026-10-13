@@ -1,6 +1,7 @@
 ---
 id: PY-01-02
 title: עבודה עם Google Colab
+name_en: Colab
 ---
 
 אני לומד את צעדיי הראשונים עם פייתון.
