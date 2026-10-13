@@ -23,8 +23,9 @@ plugins/<r|python>-course/
   units/<NN-chapter>/<NN-unit>.md   one unit = one prompt; front matter id, title, name_en
   (everything else in the plugin is generated)
 build.py                        generates manifests, catalog.json, all skills + their
-                                agents/openai.yaml labels, constitution copies,
-                                .agents/plugins/marketplace.json
+                                agents/openai.yaml labels, .agents/plugins/marketplace.json
+                                Skills are self-contained: build pastes menus, unit text
+                                and the constitution into each SKILL.md (no file reads).
 ```
 After any edit: `python build.py`, then commit the generated files too.
 
@@ -53,7 +54,11 @@ After any edit: `python build.py`, then commit the generated files too.
 - Zero-padded chapter numbers keep the dropdown in order.
 - `allow_implicit_invocation: false` stopped the skill from loading at all inside a
   plugin (ChatGPT saw only the description and invented a menu). Do not use it.
-- The skill can read plugin-level files (`../../shared/…`, `../../units/…`).
+- In Work mode a skill can read plugin-level files, but that cost >1 min of agent work
+  per unit and used up the free account's **Work/Codex quota** after a few tests.
+  Free accounts have unlimited everyday Chat, so skills must stay cheap: self-contained,
+  no file reads. Still to verify: that plugin skills run in Chat mode.
+- The unfiltered dropdown is not sorted; filtering (`@R-C ch02`) works and sorts it out.
 - ChatGPT may use the plugin unprompted; the skill asks first in that case.
 - Hebrew: tables break in RTL – use lists; the constitution states this.
 - Custom GPTs are retired Dec 2026; plugins replace them. Standalone skills are

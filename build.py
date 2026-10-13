@@ -3,7 +3,7 @@
 Sources (edit these):  shared/constitution.md, shared/skill-template.md,
                        plugins/<plugin>/units/**, PLUGINS / VERSION below.
 Generated (never edit): plugins/<plugin>/{plugin.json, .codex-plugin/plugin.json,
-                       catalog.json, shared/constitution.md, skills/<plugin>/**},
+                       catalog.json, skills/**},
                        .agents/plugins/marketplace.json
 
 Run: python build.py
@@ -15,7 +15,7 @@ import shutil
 from pathlib import Path
 
 ROOT = Path(__file__).parent
-VERSION = "0.7.0"
+VERSION = "0.8.0"
 PLUGINS = {
     "r-course": {"language": "R", "prefix": "R", "display": "R-Course"},
     "python-course": {"language": "Python", "prefix": "PY", "display": "Python-Course"},
@@ -36,6 +36,11 @@ def front_matter(path):
             value = [int(v) for v in value.strip("[]").split(",") if v.strip()]
         meta[key.strip()] = value
     return meta
+
+
+def unit_body(path):
+    """A unit file's text without its front matter."""
+    return re.sub(r"\A---\n.*?\n---\n", "", path.read_text(encoding="utf-8"), flags=re.S).strip()
 
 
 def no_spaces(path, name):
@@ -106,13 +111,12 @@ def main():
     template = (ROOT / "shared/skill-template.md").read_text(encoding="utf-8")
     chapter_template = (ROOT / "shared/chapter-skill-template.md").read_text(encoding="utf-8")
     unit_template = (ROOT / "shared/unit-skill-template.md").read_text(encoding="utf-8")
+    constitution = (ROOT / "shared/constitution.md").read_text(encoding="utf-8").strip()
     marketplace = []
     for name, cfg in PLUGINS.items():
         plugin_dir = ROOT / "plugins" / name
         catalog = build_catalog(plugin_dir, cfg)
         write(plugin_dir / "catalog.json", catalog)
-        (plugin_dir / "shared").mkdir(exist_ok=True)
-        shutil.copyfile(ROOT / "shared/constitution.md", plugin_dir / "shared/constitution.md")
         shutil.rmtree(plugin_dir / "skills", ignore_errors=True)  # skills are fully generated
 
         def add_skill(skill, content, label, description):
@@ -120,20 +124,34 @@ def main():
             write(plugin_dir / "skills" / skill / "agents/openai.yaml",
                   f'interface:\n  display_name: "{label}"\n  short_description: "{description}"\n')
 
-        add_skill(name, template.format(plugin=name, **cfg), cfg["display"], "כל הפרקים והיחידות")
+        # Skills are self-contained: menus, unit text and constitution are pasted in,
+        # so ChatGPT never has to open another file (faster, and works in Chat mode).
+        def menu(chapter):
+            lines = [f"**פרק {chapter['number']} · {chapter['title']}**", ""]
+            lines += [f"- **{u['shortcut']}** · {u['title']}" for u in chapter["units"]]
+            return "\n".join(lines)
+
+        index = "\n\n".join([f"**ספריית היחידות · {cfg['language']}**"] + [menu(c) for c in catalog["chapters"]])
+        add_skill(name, template.format(plugin=name, index=index, **cfg), cfg["display"], "כל הפרקים והיחידות")
         prefix = cfg["prefix"].lower()
         for chapter in catalog["chapters"]:
             ch = f"ch{chapter['number']:02d}"
-            add_skill(f"{prefix}-{ch}-{chapter['name_en'].lower()}", chapter_template.format(
-                skill=f"{prefix}-{ch}-{chapter['name_en'].lower()}", language=cfg["language"],
-                display=cfg["display"], number=chapter["number"], title=chapter["title"],
-                name_en=chapter["name_en"], chapter_id=chapter["id"],
-                first_shortcut=chapter["units"][0]["shortcut"]),
+            units_text = "\n\n".join(
+                f"### יחידה {u['shortcut']} · {u['title']}\n\n{unit_body(plugin_dir / u['path'])}"
+                for u in chapter["units"])
+            chapter_menu = menu(chapter) + f"\n\nכתבו את מספר היחידה כדי להתחיל, למשל {chapter['units'][0]['shortcut']}."
+            skill = f"{prefix}-{ch}-{chapter['name_en'].lower()}"
+            add_skill(skill, chapter_template.format(
+                skill=skill, language=cfg["language"], display=cfg["display"],
+                number=chapter["number"], title=chapter["title"], name_en=chapter["name_en"],
+                first_shortcut=chapter["units"][0]["shortcut"], menu=chapter_menu,
+                units=units_text, constitution=constitution),
                 f"Ch{chapter['number']:02d}-{chapter['name_en']}", chapter["title"])
             for unit in chapter["units"]:
                 skill = f"{prefix}-{ch}-u{unit['id'][-2:]}-{unit['name_en'].lower()}"
                 add_skill(skill, unit_template.format(
-                    skill=skill, language=cfg["language"], display=cfg["display"], **unit),
+                    skill=skill, language=cfg["language"], display=cfg["display"],
+                    unit_body=unit_body(plugin_dir / unit["path"]), constitution=constitution, **unit),
                     f"Ch{chapter['number']:02d}-{unit['shortcut']}-{unit['name_en']}", unit["title"])
         write(plugin_dir / "plugin.json", manifest(name, cfg))
         write(plugin_dir / ".codex-plugin/plugin.json", {**manifest(name, cfg), "skills": "./skills/"})

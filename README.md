@@ -12,17 +12,18 @@ Type `@R-C` (or `@Python-C`) and pick from the dropdown – every entry starts r
 
 Typing more filters the list, e.g. `@R-C ch02` or `@R-C numeric`.
 
-## Current status: test build (v0.7)
+## Current status: test build (v0.8)
 
-Each plugin has 2 chapters with 2 units, each as its own dropdown entry.
-Checklist (free ChatGPT account, desktop app; update or reinstall the plugins first):
-1. **Labels.** `@R-C` lists *R-Course*, *Ch01-Interface*, *Ch01-1.1-History*, … with Hebrew descriptions.
-2. **Filter.** Does `@R-C ch02` show only chapter 2 and its units? Does `@R-C numeric` find unit 2.2?
-3. **Unit.** Select *Ch02-2.2-Numeric*, send with no text. The unit should start immediately.
-4. **Chapter.** Select *Ch02-Atomic-objects*, send with no text. Expect its unit list.
-5. **Library.** Select *R-Course*, send with no text. Expect all chapters and units.
-6. **Unprompted use.** New chat without `@`: `explain numeric objects in R`. Note what happens.
-7. **Python.** Repeat 1–3 with `@Python-C`.
+v0.7 confirmed the dropdown (labels, filtering, starting a unit). But it ran in **Work mode**,
+which on a free account has a small quota that ran out. v0.8 makes every skill self-contained
+(no file reads), so it should be faster and lighter.
+
+Checklist (free account, desktop app; update or reinstall the plugins first):
+1. **Chat mode.** Switch the composer from *Work* to normal *Chat*. Does `@R-C` still show the list?
+2. **Unit in Chat mode.** Select `Ch02-2.2-Numeric`, send with no text. Does the unit start? How long does it take?
+3. **Chapter in Chat mode.** Select `Ch02-Atomic-objects`, send. Expect its unit list; then `2.3` starts that unit.
+4. **Library.** Select `R-Course`, send. Expect all chapters and units.
+5. **Usage.** After a few units, check whether any limit message appears, and for which meter (Chat or Work).
 
 ## For TAs: adding or editing a unit
 1. Edit or add a file in `plugins/<r|python>-course/units/<chapter>/` (copy an existing unit's front matter).
