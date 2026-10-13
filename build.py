@@ -15,7 +15,7 @@ import shutil
 from pathlib import Path
 
 ROOT = Path(__file__).parent
-VERSION = "0.3.0"
+VERSION = "0.4.0"
 PLUGINS = {
     "r-course": {"language": "R", "prefix": "R", "display": "R Course"},
     "python-course": {"language": "Python", "prefix": "PY", "display": "Python Course"},
@@ -96,6 +96,7 @@ def manifest(name, cfg):
 
 def main():
     template = (ROOT / "shared/skill-template.md").read_text(encoding="utf-8")
+    chapter_template = (ROOT / "shared/chapter-skill-template.md").read_text(encoding="utf-8")
     marketplace = []
     for name, cfg in PLUGINS.items():
         plugin_dir = ROOT / "plugins" / name
@@ -108,6 +109,13 @@ def main():
         write(skill_dir / "agents/openai.yaml",
               f'interface:\n  display_name: "{cfg["display"]}"\n'
               f'  short_description: "{cfg["language"]} course tutor – chapter and unit menu"\n')
+        for chapter in catalog["chapters"]:
+            folder = Path(chapter["units"][0]["path"]).parent.name
+            skill = f"{cfg['prefix'].lower()}-{folder}"
+            write(plugin_dir / "skills" / skill / "SKILL.md", chapter_template.format(
+                skill=skill, language=cfg["language"], number=chapter["number"],
+                title=chapter["title"], chapter_id=chapter["id"],
+                first_shortcut=chapter["units"][0]["shortcut"]))
         write(plugin_dir / "plugin.json", manifest(name, cfg))
         write(plugin_dir / ".codex-plugin/plugin.json", {**manifest(name, cfg), "skills": "./skills/"})
         marketplace.append({

@@ -4,11 +4,21 @@ AI tutor plugins for the TAU School of Psychology code courses: **R Course** and
 Each plugin holds the course's chapters and units; the student picks a unit and ChatGPT
 teaches it step by step, following the course's teaching rules.
 
-## Current status: test build (v0.3)
+## Current status: test build (v0.4)
 
-Each plugin has 2 chapters with 2 units, to test the full menu flow before adding all units.
+Each plugin has 2 chapters with 2 units. v0.4 adds one skill per chapter next to the main
+skill, to test whether ChatGPT's picker lets students select a chapter directly.
 
-## Test checklist (free ChatGPT account, desktop app)
+## Picker test (v0.4)
+
+Update the plugins first (Plugins → Installed, or reinstall). Then note what appears in each case:
+1. Type `@R course` and look at the dropdown **before** pressing Tab. One entry, or three
+   (`r-course`, `r-01-interface`, `r-02-atomic-objects`)?
+2. Type `$` alone. Is there a list? Does it show the plugin's skills?
+3. Type `$r-course:`. Does it list the chapter skills?
+4. If a chapter skill can be selected: send it with no text. Expect that chapter's unit menu.
+
+## Menu flow checklist (v0.3, still valid)
 
 1. **Install.** Uninstall the old `code-course-test`. Add this repo as a marketplace again (or refresh it)
    and install **R Course** and **Python Course**.
