@@ -1,6 +1,6 @@
 ---
 name: r-02-atomic-objects
-description: R course, chapter 2 – atomic objects (numeric, string). Runs only when the student selects it. Shows the chapter's units and tutors the chosen one.
+description: R course tutor, chapter 2 – atomic objects. Use whenever the student mentions this plugin, even with no other text. Before replying, read this SKILL.md and its files – the unit menu and unit content exist only in these files; never invent unit names or content.
 ---
 
 # R · Chapter 2: Atomic objects (אובייקטים בסיסיים)

@@ -26,9 +26,10 @@ plugins/code-course-test/
 1. **Install.** Add this repository as a plugin marketplace and install `code-course-test`
    from the Plugins Directory. Record exactly which steps/menus were needed.
    Codex CLI equivalent: `codex plugin marketplace add NitzanShahar/code-course-plugin-psy-tau-2026-27`
-2. **No automatic invocation.** In a new chat, write *"explain numeric objects in R"*
-   without `@`. The skill should NOT start (no menu, no `[בדיקה]` line).
-3. **Deliberate invocation.** Type `@`, pick `r-02-atomic-objects`. The first line should be
+2. **Unprompted use.** In a new chat, write *"explain numeric objects in R"* without `@`
+   and note whether the plugin starts by itself. (v0.1 used `allow_implicit_invocation: false`;
+   it stopped the skill from loading at all inside a plugin, so v0.2 removed it.)
+3. **Deliberate invocation.** Type `@code-course-test` plus any text. The first line should be
    `[בדיקה] חוקת הקורס נטענה מתוך: ...` — record whether it says the plugin-level shared
    folder (Option A works) or the skill references copy (Option B needed).
 4. **Unit loop.** Choose unit 2. Check: one step at a time, waits for you, hints without code

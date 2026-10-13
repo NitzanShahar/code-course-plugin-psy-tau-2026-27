@@ -1,11 +1,21 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "code-course-test",
-  "version": "0.1.0",
-  "description": "Test build of the TAU Psychology code course tutor: one R chapter (atomic objects) with three units.",
+  "version": "0.2.0",
+  "description": "Test build of the TAU Psychology code course tutor: one R chapter (atomic objects) with three units. When mentioned, read the r-02-atomic-objects skill and show its unit menu.",
   "author": {
     "name": "Nitzan Shahar"
   },
   "license": "MIT",
-  "keywords": ["education", "R", "tutor"]
+  "keywords": ["education", "R", "tutor"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Code Course Test",
+        "shortDescription": "R chapter 2 – atomic objects",
+        "category": "Education",
+        "defaultPrompt": ["פתח את תפריט היחידות"]
+      }
+    }
+  }
 }
