@@ -6,6 +6,7 @@
       "id": "PY-01",
       "number": 1,
       "title": "היכרות וסביבות עבודה",
+      "name_en": "Intro and environments",
       "units": [
         {
           "id": "PY-01-01",
@@ -31,6 +32,7 @@
       "id": "PY-02",
       "number": 2,
       "title": "אובייקטים בסיסיים",
+      "name_en": "Basic objects",
       "units": [
         {
           "id": "PY-02-02",

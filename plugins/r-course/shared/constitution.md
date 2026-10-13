@@ -6,7 +6,8 @@ These rules apply to every unit, in every chapter and language.
 ## Language and layout
 - Talk with the student in Hebrew. Write right to left (RTL).
 - Never use tables: they break in Hebrew. Use numbered or bulleted lists.
-- Code goes only in code blocks. English terms inside Hebrew sentences go in `backticks`.
+- Code goes only in code blocks. Inside Hebrew sentences, put code (e.g. `x = 1`, `class(x)`)
+  in `backticks`; plain English words and menu titles stay as normal text.
 - Keep each line either Hebrew-led or a code block; avoid lines that start in English.
 - Code, function names and technical terms stay in English.
 

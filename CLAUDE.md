@@ -7,13 +7,15 @@ Target: students on **free** ChatGPT accounts, desktop app.
 ## Structure
 ```
 shared/constitution.md          teaching rules for every unit (edit here only)
-shared/skill-template.md        the skill, shared by both plugins (edit here only)
+shared/skill-template.md        main skill per plugin = weekly view (edit here only)
+shared/chapter-skill-template.md  one skill per chapter (edit here only)
 plugins/<r|python>-course/
-  units/<NN-chapter>/chapter.md     chapter id + title
+  units/<NN-chapter>/chapter.md     chapter id, Hebrew title, short English name_en
   units/<NN-chapter>/<NN-unit>.md   one unit = one prompt, with front matter
   (everything else in the plugin is generated)
-build.py                        generates manifests, catalog.json, SKILL.md,
-                                constitution copies, .agents/plugins/marketplace.json
+build.py                        generates manifests, catalog.json, all skills + their
+                                agents/openai.yaml labels, constitution copies,
+                                .agents/plugins/marketplace.json
 ```
 After any edit: `python build.py`, then commit the generated files too.
 
@@ -27,8 +29,14 @@ After any edit: `python build.py`, then commit the generated files too.
 
 ## What we verified in ChatGPT (free account, desktop, Oct 2026)
 - A plugin installs from this public GitHub repo via its marketplace file.
-- `@` selects a **plugin**, not a skill inside it. So: one plugin per language,
-  one skill per plugin, and navigation happens in the chat menu.
+- Typing `@R c` or `$r-course:` lists **every skill in the plugin** (shown as
+  `$plugin:skill`). So the dropdown is the clickable chapter menu: one plugin per
+  language, one skill per chapter, plus a main skill for the weekly view.
+  Selecting a chapter skill with no text still starts it.
+- Dropdown labels come from each skill's `agents/openai.yaml` (`display_name`,
+  `short_description`); without it ChatGPT shows the raw name and description.
+  Keep `display_name` English (mixed Hebrew/English lines get scrambled).
+- Zero-padded chapter numbers keep the dropdown in order.
 - `allow_implicit_invocation: false` stopped the skill from loading at all inside a
   plugin (ChatGPT saw only the description and invented a menu). Do not use it.
 - The skill can read plugin-level files (`../../shared/…`, `../../units/…`).

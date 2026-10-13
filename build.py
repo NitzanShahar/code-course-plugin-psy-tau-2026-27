@@ -15,7 +15,7 @@ import shutil
 from pathlib import Path
 
 ROOT = Path(__file__).parent
-VERSION = "0.4.0"
+VERSION = "0.5.0"
 PLUGINS = {
     "r-course": {"language": "R", "prefix": "R", "display": "R Course"},
     "python-course": {"language": "Python", "prefix": "PY", "display": "Python Course"},
@@ -63,6 +63,7 @@ def build_catalog(plugin_dir, cfg):
             "id": chapter["id"],
             "number": int(chapter["id"].split("-")[1]),
             "title": chapter["title"],
+            "name_en": chapter["name_en"],
             "units": units,
         })
     return {"plugin": plugin_dir.name, "language": cfg["language"], "chapters": chapters}
@@ -108,14 +109,17 @@ def main():
         write(skill_dir / "SKILL.md", template.format(plugin=name, **cfg))
         write(skill_dir / "agents/openai.yaml",
               f'interface:\n  display_name: "{cfg["display"]}"\n'
-              f'  short_description: "{cfg["language"]} course tutor – chapter and unit menu"\n')
+              f'  short_description: "Weekly view – choose your week"\n')
         for chapter in catalog["chapters"]:
             folder = Path(chapter["units"][0]["path"]).parent.name
             skill = f"{cfg['prefix'].lower()}-{folder}"
             write(plugin_dir / "skills" / skill / "SKILL.md", chapter_template.format(
-                skill=skill, language=cfg["language"], number=chapter["number"],
-                title=chapter["title"], chapter_id=chapter["id"],
-                first_shortcut=chapter["units"][0]["shortcut"]))
+                skill=skill, language=cfg["language"], display=cfg["display"],
+                number=chapter["number"], title=chapter["title"], name_en=chapter["name_en"],
+                chapter_id=chapter["id"], first_shortcut=chapter["units"][0]["shortcut"]))
+            write(plugin_dir / "skills" / skill / "agents/openai.yaml",
+                  f'interface:\n  display_name: "Ch {chapter["number"]:02d} · {chapter["name_en"]}"\n'
+                  f'  short_description: "{chapter["title"]}"\n')
         write(plugin_dir / "plugin.json", manifest(name, cfg))
         write(plugin_dir / ".codex-plugin/plugin.json", {**manifest(name, cfg), "skills": "./skills/"})
         marketplace.append({
